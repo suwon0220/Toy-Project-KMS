@@ -4,11 +4,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import toy.kms.application.model.KeySearchCriteria;
 import toy.kms.application.service.KeyManagementService;
-import toy.kms.domain.DigestAlgorithm;
-import toy.kms.domain.KeyId;
-import toy.kms.domain.ManagedKey;
-import toy.kms.domain.SignatureAlgorithm;
+import toy.kms.domain.*;
 import toy.kms.web.form.*;
 
 import java.util.LinkedList;
@@ -35,7 +33,13 @@ public class KeyAPIController {
     }
 
     @GetMapping("/keys")
-    public List<KeyDataForm> listKeys() {
+    public List<KeyDataForm> listKeys(
+            @RequestParam(required = false) String keyword,
+            @RequestParam(required = false) KeyAlgorithm keyAlgorithm) {
+        if (keyword != null || keyAlgorithm != null) {
+            KeySearchCriteria criteria = new KeySearchCriteria(keyAlgorithm, keyword);
+            return keyManagementService.search(criteria).stream().map(KeyDataForm::from).collect(Collectors.toList());
+        }
         return keyManagementService.findAll().stream().map(KeyDataForm::from).collect(Collectors.toList());
     }
 
@@ -64,7 +68,9 @@ public class KeyAPIController {
     @PostMapping("/keys/delete")
     public List<KeyId> disableKey(@RequestBody KeyId[] keyId) {
         List<KeyId> keyIds = new LinkedList<>();
-        for (KeyId id : keyId) keyIds.add(keyManagementService.delete(id));
+        for (KeyId id : keyId) {
+            keyIds.add(keyManagementService.delete(id));
+        }
         return keyIds;
     }
 
