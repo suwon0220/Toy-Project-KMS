@@ -3,7 +3,6 @@ package toy.kms.domain;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
-import toy.kms.domain.generation.KeyGenerationParameters;
 import toy.kms.web.KeyAlgorithmPreset;
 
 import java.time.Instant;

@@ -1,10 +1,8 @@
 package toy.kms.application.port;
 
 import toy.kms.application.model.GeneratedKeyMaterial;
-import toy.kms.domain.DigestAlgorithm;
 import toy.kms.domain.KeyMaterialRef;
 import toy.kms.domain.KeyProviderId;
-import toy.kms.domain.SignatureAlgorithm;
 import toy.kms.domain.generation.KeyGenerationParameters;
 import toy.kms.domain.signature.SignatureParameters;
 

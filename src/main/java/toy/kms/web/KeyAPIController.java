@@ -5,7 +5,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import toy.kms.application.service.KeyManagementService;
-import toy.kms.domain.*;
+import toy.kms.domain.DigestAlgorithm;
+import toy.kms.domain.KeyId;
+import toy.kms.domain.ManagedKey;
+import toy.kms.domain.SignatureAlgorithm;
 import toy.kms.web.form.*;
 
 import java.util.LinkedList;
@@ -49,12 +52,12 @@ public class KeyAPIController {
     }
 
     @PostMapping("/keys/sign")
-    public SignResponseForm signData(@RequestBody @Validated SignRequestForm signRequestForm) throws Exception {
+    public SignResponseForm signData(@RequestBody @Validated SignRequestForm signRequestForm) {
         return new SignResponseForm(keyManagementService.sign(signRequestForm.keyId(), signRequestForm.signatureAlgorithm(), signRequestForm.digestAlgorithm(), signRequestForm.data()));
     }
 
     @PostMapping("/keys/verify")
-    public VerifyResponseForm verifySignature(@RequestBody @Validated VerifyRequestForm verifyRequestForm) throws Exception {
+    public VerifyResponseForm verifySignature(@RequestBody @Validated VerifyRequestForm verifyRequestForm) {
         return new VerifyResponseForm(keyManagementService.verify(verifyRequestForm.keyId(), verifyRequestForm.signatureAlgorithm(), verifyRequestForm.digestAlgorithm(), verifyRequestForm.data(), verifyRequestForm.signature()));
     }
 
