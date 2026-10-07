@@ -1,0 +1,27 @@
+package toy.kms.config;
+
+
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
+@Slf4j
+@Configuration
+public class KMSConfig {
+
+    static private final String KEYID_DIGEST_ALGORITHM = "SHA-256";
+
+    @Bean
+    public MessageDigest keyIdMessageDigest() {
+        try {
+            return MessageDigest.getInstance(KEYID_DIGEST_ALGORITHM);
+        } catch (NoSuchAlgorithmException e) {
+            throw new IllegalStateException(
+                    KEYID_DIGEST_ALGORITHM + " algorithm is not available in the environment.", e
+            );
+        }
+    }
+}
